@@ -1,14 +1,21 @@
-# docker-test-toolkit
+<h1 align="center">docker-test-toolkit</h1>
 
-[![Release](https://img.shields.io/github/v/release/juzhxng/docker-test-toolkit)](https://github.com/juzhxng/docker-test-toolkit/releases/latest)
-[![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
-[![CI](https://github.com/juzhxng/docker-test-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/juzhxng/docker-test-toolkit/actions)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
-[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+<p align="center"><strong>A waiting line for Docker-backed tests: many projects and coding agents share one machine, nothing collides, and nothing is left behind.</strong></p>
 
-Let coding agents run Docker-backed tests from several projects on one machine, without them breaking each other or
-leaving anything behind.
+<p align="center">
+  <a href="https://github.com/juzhxng/docker-test-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/juzhxng/docker-test-toolkit" alt="Release"></a>
+  <a href="https://github.com/juzhxng/docker-test-toolkit/actions/workflows/ci.yml"><img src="https://github.com/juzhxng/docker-test-toolkit/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.12+-blue.svg" alt="Python 3.12+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License: Apache-2.0"></a>
+</p>
+
+Picture three coding agents on one laptop, each starting its project's integration tests at the same moment. Each
+suite starts a database, a cache and a search engine. Together they run out of memory, a test run is killed halfway,
+and its containers keep running. Someone types `docker system prune` and takes the other projects' volumes with it.
+
+docker-test-toolkit prevents that. A test run tells it how much memory and CPU it needs. If the machine has room, the
+run starts at once; if not, it waits its turn. When the run ends, the toolkit removes exactly the containers,
+networks, volumes and images that run created, and nothing else. If a run is killed, the next one cleans up after it.
 
 **Purpose and non-goals.** docker-test-toolkit is a queue for Docker-backed test runs on one machine: runs go one
 after another, or side by side when their declared memory fits, and later arrivals wait. Every Docker resource a run
@@ -17,22 +24,27 @@ changing Docker around it. It is not a scheduler (it does not place, prioritise 
 live processes (a run's host processes are neither measured nor limited), and it is not a container runtime, a CI
 system or a cluster tool.
 
-When agents start test suites at once on a laptop or CI host, the suites compete for memory, and a killed run leaves
-containers, networks and volumes behind. Cleaning up with `docker system prune` then takes other projects' resources with
-it. This toolkit sits between your tests and Docker:
+## What it does
 
-- **Admission.** A run states what it needs. It waits until the machine has the memory, CPU and disk for it, then
-  runs. Runs that fit together overlap.
-- **Exact cleanup.** Every Docker resource a run creates is recorded before it exists, and only those resources are
-  removed. It never prunes.
-- **Recovery.** A run killed at any point is found and cleaned up by the next queued run or `cleanup project --execute`.
-- **Shared runs.** Runs that fit can use the same daemon together, under rules that keep them from disturbing each other.
-- **A guard for agents.** A pre-tool-use hook for Claude Code, Codex and others refuses direct Docker changes, so everything
-  goes through the toolkit.
+- **Waits for room.** A run says what it needs. It starts when the machine has that much memory, CPU and disk free,
+  and runs that fit together run side by side.
+- **Cleans up exactly.** Every Docker resource a run creates is written down before it exists. At the end, only those
+  are removed. It never prunes.
+- **Recovers.** A run killed at any moment is cleaned up by the next run, or by `cleanup project --execute`.
+- **Explains a wait.** When a run waits or is refused, its record says why, with the numbers that decided it, such as
+  the memory it needed and the memory free.
+- **Keeps agents in line.** A hook for Claude Code, Codex and other agents refuses direct Docker changes, so
+  everything goes through the toolkit.
 
-Your project keeps its compose files, service graph, readiness checks, migrations and test selection. The toolkit never
-reads them for meaning. It is one file with no dependencies beyond Python's standard library, installed once per machine.
-Projects hold no copy, and a new toolkit release never requires a project change.
+Your project keeps its own compose files, services, readiness checks, migrations and test selection. The toolkit
+never interprets them.
+
+## Highlights
+
+- **One file** // a single `.pyz` with nothing but Python's standard library, installed once per machine
+- **No project copy** // projects hold no copy, and a new release never asks a project to change
+- **Same everywhere** // the same toolkit on your laptop, on GitHub-hosted runners and on your own CI server
+- **Exact** // removes only what it recorded, so other projects on the same Docker are never touched
 
 ## Set it up with your agent
 
@@ -48,41 +60,29 @@ Ask me before anything that changes my machine, my CI or my harness configuratio
 The agent installs the toolkit where you choose, connects your tests and proves it with one real run.
 [Read the steps](docs/agent-setup.md) first if you like. To do it by hand, read on.
 
-## Where it runs
-
-- **Your machine:** installed once. Every project on the machine and every agent session shares it, so their test runs queue
-  instead of colliding.
-- **CI:** the same toolkit and the same adapter, so your tests run the same way.
-  - **GitHub-hosted runners:** each job starts on a fresh machine, so it installs the toolkit every time.
-  - **Your own server or VPS:** install it once, not per job. Runners that share a Docker daemon share that installation, so
-    their jobs queue too.
-
-  See the [CI guide](docs/ci.md).
-
 ## Requirements
 
-- macOS or Linux, on CPython 3.12 or newer
-- Docker CLI with the Compose and Buildx plugins, and one of these runtimes:
-  - macOS: [Docker Desktop](https://docs.docker.com/desktop/), [Colima](https://github.com/abiosoft/colima) or a
+- macOS or Linux, with CPython 3.12 or newer
+- The Docker CLI with the Compose and Buildx plugins, and one of these:
+  - on macOS: [Docker Desktop](https://docs.docker.com/desktop/), [Colima](https://github.com/abiosoft/colima) or a
     [Podman](https://podman.io) machine
-  - Linux: Docker Engine
+  - on Linux: Docker Engine
 
-OrbStack and other runtimes are refused. Setup details for each runtime are in the
+Other runtimes, OrbStack among them, are refused. Setup notes for each runtime are in the
 [operations guide](docs/operations.md#host-telemetry-limits).
 
 ## Install
 
 Download `docker-test-toolkit.pyz` from the [latest release](https://github.com/juzhxng/docker-test-toolkit/releases/latest),
-compare its hash with the release notes, and install it:
+check its SHA-256 against the release notes, then:
 
 ```sh
 python3.12 -I docker-test-toolkit.pyz install --json
 docker-test-toolkit readiness inspect --json
 ```
 
-Any CPython 3.12 or newer outside a virtual environment works. On Linux the installation lives in
-`/opt/docker-test-toolkit` and belongs to the user who runs the tests, so create that folder first, and link the command
-afterwards:
+Use any CPython 3.12 or newer outside a virtual environment. On Linux the toolkit lives in `/opt/docker-test-toolkit`
+and belongs to the user who runs the tests, so create that folder first and link the command afterwards:
 
 ```sh
 sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 755 /opt/docker-test-toolkit
@@ -90,10 +90,20 @@ python3 -I docker-test-toolkit.pyz install --json
 sudo ln -sf /opt/docker-test-toolkit/bin/docker-test-toolkit /usr/local/bin/docker-test-toolkit
 ```
 
-## Use
+## Where it runs
+
+- **Your machine:** installed once. Every project and every agent session on the machine shares it, so their test runs
+  wait for each other instead of colliding.
+- **GitHub-hosted runners:** each job starts on a fresh machine and installs the toolkit first.
+- **Your own CI server:** install it once. Runners that share one Docker daemon share the installation, so their jobs
+  wait for each other too, and for runs on the same machine outside CI.
+
+The [CI guide](docs/ci.md) has the steps for each.
+
+## Use it in your tests
 
 **Python projects** copy [`docs/loader/docker_test_toolkit_loader.py`](docs/loader/docker_test_toolkit_loader.py) into
-their tree once, and declare a run:
+their tree once, then open a run around their tests:
 
 ```python
 import subprocess
@@ -133,8 +143,8 @@ finally:
     run.leave(outcome)  # removes exactly what the run created
 ```
 
-The stack's `compose.yaml` uses images the run pulled by digest or built. A run can only share the daemon with other runs if
-each service also has a hard memory limit, so set one within the budget:
+Your `compose.yaml` uses images the run pulled by digest or built. To run side by side with other runs, give every
+service a hard memory limit that fits the budget:
 
 ```yaml
 services:
@@ -144,28 +154,28 @@ services:
     cpus: 0.5
 ```
 
-**Other languages** talk to the `docker-test-toolkit bridge lease` command over NDJSON on stdin and stdout.
+**Other languages** talk to `docker-test-toolkit bridge lease` over NDJSON on standard input and output.
 
-The [adopter guide](docs/adopters.md) covers both, along with finite batches, sharing a run and CI.
+The [adopter guide](docs/adopters.md) covers both, plus test batches, sharing a run and CI.
 
 ## Documentation
 
 - [Agent setup](docs/agent-setup.md): the steps a coding agent follows to connect a project
-- [CI guide](docs/ci.md): how the toolkit works on CI, and setting it up on hosted and self-hosted runners
-- [Adopter guide](docs/adopters.md): integrating a project, and the permanent contract it can rely on
-- [Operations guide](docs/operations.md): installation, CI runners, cleanup, recovery and troubleshooting
-- [Compatibility policy](docs/compatibility.md): what stays stable between releases
+- [CI guide](docs/ci.md): hosted and self-hosted runners
+- [Adopter guide](docs/adopters.md): connecting a project, and what it can rely on
+- [Operations guide](docs/operations.md): installing, cleanup, recovery and troubleshooting
+- [Compatibility](docs/compatibility.md): what stays the same between releases
 
 ## Development
 
-Developing the toolkit also needs [`uv`](https://docs.astral.sh/uv/) and `gitleaks` 8.30.1.
+You also need [`uv`](https://docs.astral.sh/uv/) and `gitleaks` 8.30.1.
 
 ```sh
 uv sync
 uv run poe qa
 ```
 
-Build the archive from committed files. The same commit always gives the same bytes:
+The release archive is built from committed files, and the same commit always gives the same bytes:
 
 ```sh
 uv run python scripts/build_zipapp.py build --repository . --output-directory dist
