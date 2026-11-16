@@ -22,11 +22,11 @@ The toolkit is installed once per machine, for every project of this user. **Ask
 `docker-test-toolkit protocol --json` already works, tell the user which version is installed and ask whether to upgrade.
 
 ```sh
-curl -fsSLO https://github.com/juzhxng/docker-test-toolkit/releases/latest/download/docker-test-toolkit.pyz
+curl -fsSLO https://github.com/julianzh0/docker-test-toolkit/releases/latest/download/docker-test-toolkit.pyz
 shasum -a 256 docker-test-toolkit.pyz   # sha256sum on Linux
 ```
 
-Compare the hash with the table in the [latest release's notes](https://github.com/juzhxng/docker-test-toolkit/releases/latest).
+Compare the hash with the table in the [latest release's notes](https://github.com/julianzh0/docker-test-toolkit/releases/latest).
 If they differ, delete the file, tell the user and stop. Otherwise install it, using any CPython 3.12 or newer that is not
 inside a virtual environment. On macOS:
 

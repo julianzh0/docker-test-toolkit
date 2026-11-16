@@ -6,7 +6,7 @@ When asked to onboard, re-adopt, or operate a repository with this toolkit, use 
 Agents without skill support should follow `docs/adopters.md` for integrating a repository and `docs/operations.md` for
 ordinary operation. Do not load those guides for unrelated toolkit source changes.
 
-This repository lives on GitHub (`juzhxng/docker-test-toolkit`); CI results are read with `gh run list` and
+This repository lives on GitHub (`julianzh0/docker-test-toolkit`); CI results are read with `gh run list` and
 `gh run view <id> --log`; the logs carry each test's duration. Never commit
 personal data, private hostnames or host details: the gitleaks pre-commit hook checks secrets with the repository
 rules, and the `scan` job checks every commit with them plus the maintainer's private term list.

@@ -7,8 +7,8 @@
 <p align="center"><strong>A waiting line for Docker-backed tests: many projects and coding agents share one machine, nothing collides, and nothing is left behind.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/juzhxng/docker-test-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/juzhxng/docker-test-toolkit" alt="Release"></a>
-  <a href="https://github.com/juzhxng/docker-test-toolkit/actions/workflows/ci.yml"><img src="https://github.com/juzhxng/docker-test-toolkit/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/julianzh0/docker-test-toolkit/releases/latest"><img src="https://img.shields.io/github/v/release/julianzh0/docker-test-toolkit" alt="Release"></a>
+  <a href="https://github.com/julianzh0/docker-test-toolkit/actions/workflows/ci.yml"><img src="https://github.com/julianzh0/docker-test-toolkit/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.12+-blue.svg" alt="Python 3.12+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License: Apache-2.0"></a>
 </p>
@@ -59,7 +59,7 @@ Paste this into your coding agent, in the project you want to connect:
 ```text
 Set up docker-test-toolkit for this project, on this machine, in my CI, or both. Ask me which if I
 did not say. Read and follow
-https://raw.githubusercontent.com/juzhxng/docker-test-toolkit/main/docs/agent-setup.md
+https://raw.githubusercontent.com/julianzh0/docker-test-toolkit/main/docs/agent-setup.md
 Ask me before anything that changes my machine, my CI or my harness configuration.
 ```
 
@@ -79,7 +79,7 @@ Other runtimes, OrbStack among them, are refused. Setup notes for each runtime a
 
 ## Install
 
-Download `docker-test-toolkit.pyz` from the [latest release](https://github.com/juzhxng/docker-test-toolkit/releases/latest),
+Download `docker-test-toolkit.pyz` from the [latest release](https://github.com/julianzh0/docker-test-toolkit/releases/latest),
 check its SHA-256 against the release notes, then:
 
 ```sh
@@ -189,4 +189,4 @@ uv run python scripts/build_zipapp.py build --repository . --output-directory di
 
 ## License
 
-Copyright 2026 juzhxng. Licensed under [Apache-2.0](LICENSE).
+Copyright 2026 julianzh0. Licensed under [Apache-2.0](LICENSE).

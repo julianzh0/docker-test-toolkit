@@ -6,13 +6,13 @@ version = "0.8.0"
 description = "Let coding agents run Docker-backed tests from several projects on one machine"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-authors = [{name = "juzhxng", email = "juzhxng@users.noreply.github.com"}]
+authors = [{name = "julianzh0", email = "julianzh0@users.noreply.github.com"}]
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 dependencies = []
 
 [project.urls]
-Repository = "https://github.com/juzhxng/docker-test-toolkit"
+Repository = "https://github.com/julianzh0/docker-test-toolkit"
 
 [project.scripts]
 docker-test-toolkit = "docker_test_toolkit.factories.cli:main"

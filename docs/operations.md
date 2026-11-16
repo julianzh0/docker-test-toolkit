@@ -23,11 +23,11 @@ rather than managing `run` commands by hand.
 | Command path | `~/.local/bin/docker-test-toolkit`, made by `install` | `/usr/local/bin/docker-test-toolkit`, made by `install` when that folder is writable |
 | Registry and account | `<root>/state/` and `<root>/state/test-admission/` | same |
 
-Download a release from [GitHub Releases](https://github.com/juzhxng/docker-test-toolkit/releases) and compare its hash with
+Download a release from [GitHub Releases](https://github.com/julianzh0/docker-test-toolkit/releases) and compare its hash with
 the table in the release notes:
 
 ```sh
-curl -fsSLO https://github.com/juzhxng/docker-test-toolkit/releases/latest/download/docker-test-toolkit.pyz
+curl -fsSLO https://github.com/julianzh0/docker-test-toolkit/releases/latest/download/docker-test-toolkit.pyz
 shasum -a 256 docker-test-toolkit.pyz   # sha256sum on Linux
 ```
 

@@ -5,7 +5,7 @@ description: Use when onboarding, running, queueing, recovering, cleaning, insta
 
 # Docker Test Toolkit
 
-Paths below are relative to the root of the [docker-test-toolkit repository](https://github.com/juzhxng/docker-test-toolkit).
+Paths below are relative to the root of the [docker-test-toolkit repository](https://github.com/julianzh0/docker-test-toolkit).
 
 Use the installed toolkit and the adopter repository's adapter as the authorities. Keep product commands,
 service topology, readiness, migrations, credentials, and success semantics repository-owned. Do not infer them from a

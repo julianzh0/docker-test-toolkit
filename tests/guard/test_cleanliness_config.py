@@ -25,7 +25,7 @@ id = "owner-term-synthetic"
 description = "owner term (synthetic)"
 regex = '''(?i)\\b{SYNTHETIC_TERM}\\b'''
 """
-IDENTITY = "juzhxng <juzhxng@users.noreply.github.com>"
+IDENTITY = "julianzh0 <julianzh0@users.noreply.github.com>"
 
 
 def _gitleaks() -> str:

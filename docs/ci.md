@@ -16,7 +16,7 @@ What differs is what shares the machine:
 ## GitHub-hosted runners
 
 Add these steps before your tests, in each job that uses Docker. They work on `ubuntu-24.04` and `ubuntu-24.04-arm`. Pin a release
-and its SHA-256 from the [release notes](https://github.com/juzhxng/docker-test-toolkit/releases), so that CI changes only when
+and its SHA-256 from the [release notes](https://github.com/julianzh0/docker-test-toolkit/releases), so that CI changes only when
 you change it:
 
 ```yaml
@@ -25,7 +25,7 @@ you change it:
     VERSION: v0.8.0
     SHA256: 7586fe8c270dcf76e25f0f9d561317646958473b102c414d56bb65e2ce91125d
   run: |
-    curl -fsSLO "https://github.com/juzhxng/docker-test-toolkit/releases/download/$VERSION/docker-test-toolkit.pyz"
+    curl -fsSLO "https://github.com/julianzh0/docker-test-toolkit/releases/download/$VERSION/docker-test-toolkit.pyz"
     echo "$SHA256  docker-test-toolkit.pyz" | sha256sum -c -
     sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 755 /opt/docker-test-toolkit
     python3 -I docker-test-toolkit.pyz install --json
