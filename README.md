@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/logo.svg" alt="docker-test-toolkit" width="240">
+</p>
+
 <h1 align="center">docker-test-toolkit</h1>
 
 <p align="center"><strong>A waiting line for Docker-backed tests: many projects and coding agents share one machine, nothing collides, and nothing is left behind.</strong></p>
@@ -31,6 +35,8 @@ system or a cluster tool.
 - **Cleans up exactly.** Every Docker resource a run creates is written down before it exists. At the end, only those
   are removed. It never prunes.
 - **Recovers.** A run killed at any moment is cleaned up by the next run, or by `cleanup project --execute`.
+- **Protects the machine.** If memory runs critically short or the machine starts swapping hard, the toolkit ends the
+  run that holds it, instead of letting everything stall.
 - **Explains a wait.** When a run waits or is refused, its record says why, with the numbers that decided it, such as
   the memory it needed and the memory free.
 - **Keeps agents in line.** A hook for Claude Code, Codex and other agents refuses direct Docker changes, so

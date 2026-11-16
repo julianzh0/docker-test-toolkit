@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-80 -40 160 80" role="img" aria-label="docker-test-toolkit">
+  <title>docker-test-toolkit</title>
+  <style>@media (prefers-color-scheme: dark) { .ink { fill: #c9d6e3; } .ink-line { stroke: #c9d6e3; } }</style>
+  <g class="ink" fill="#0f2a44">
+    <rect x="-61" y="-11" width="22" height="22" rx="3"/>
+    <rect x="-34" y="-11" width="22" height="22" rx="3"/>
+    <rect x="-7" y="-11" width="22" height="22" rx="3"/>
+  </g>
+  <path d="M27 -30 V30" stroke="#1fa3a3" stroke-width="8" stroke-linecap="round"/>
+  <rect x="39" y="-11" width="22" height="22" rx="3" fill="#e8553d"/>
+</svg>
